@@ -123,9 +123,16 @@ export function AdminProvider({ children }) {
   }, [ordersList]);
 
   const addProduct = useCallback((productData) => {
+    const rawSlug = (productData.name || "new-shoe").toLowerCase().replace(/[^a-z0-9]+/g, "-");
+    const uniqueSlug = `${rawSlug}-${Date.now().toString().slice(-4)}`;
+    const imgUrl =
+      productData.imageUrl && productData.imageUrl.trim()
+        ? productData.imageUrl.trim()
+        : "https://images.pexels.com/photos/10963373/pexels-photo-10963373.jpeg?auto=compress&cs=tinysrgb&w=900";
+
     const newProduct = {
       id: Date.now(),
-      slug: (productData.name || "new-shoe").toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+      slug: uniqueSlug,
       brand: productData.brand || "Nike",
       name: productData.name || "New Sneaker",
       category: productData.category || "Lifestyle",
@@ -133,20 +140,19 @@ export function AdminProvider({ children }) {
       price: Number(productData.price) || 120,
       compareAt: productData.compareAt ? Number(productData.compareAt) : null,
       rating: 5.0,
-      reviews: 0,
+      reviews: 1,
       color: productData.color || "Black / White",
       colorHex: productData.colorHex || "#000000",
-      colors: [{ name: productData.color || "Black", hex: productData.colorHex || "#000000" }],
-      sizes: [7, 8, 9, 10, 11],
-      stock: Number(productData.stock) || 10,
-      tags: ["new"],
+      colors: [{ name: productData.color || "Black / White", hex: productData.colorHex || "#000000" }],
+      sizes: [7, 8, 9, 10, 11, 12],
+      stock: Number(productData.stock) || 15,
+      tags: ["new", "trending"],
       badge: "New arrival",
-      images: [
-        productData.imageUrl ||
-          "https://images.pexels.com/photos/10963373/pexels-photo-10963373.jpeg?auto=compress&cs=tinysrgb&w=900",
-      ],
-      description: productData.description || "High performance quality footwear.",
-      details: ["Premium materials", "Durable Rubber Sole", "Breathable Mesh"],
+      images: [imgUrl, imgUrl],
+      description:
+        productData.description ||
+        `${productData.name || "This shoe"} is designed for everyday comfort and modern street style.`,
+      details: ["Premium durable upper", "Responsive comfort cushioning", "Multi-surface grip outsole"],
     };
 
     setProductsList((prev) => [newProduct, ...prev]);

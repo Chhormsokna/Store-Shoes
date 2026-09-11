@@ -3,7 +3,8 @@ import { Link, useSearchParams } from "react-router-dom";
 import FilterSidebar, { emptyFilters } from "../components/FilterSidebar";
 import ProductCard from "../components/ProductCard";
 import { Chevron, Filter, Search, X } from "../components/Icons";
-import { allSizes, formatPrice, products } from "../data/products";
+import { allSizes, formatPrice } from "../data/products";
+import { useAdmin } from "../context/AdminContext";
 
 const SORTS = [
   { value: "featured", label: "Featured" },
@@ -17,6 +18,7 @@ const SORTS = [
 const PAGE_SIZE = 9;
 
 export default function Shop() {
+  const { products } = useAdmin();
   const [searchParams, setSearchParams] = useSearchParams();
   const [filters, setFilters] = useState(emptyFilters);
   const [query, setQuery] = useState("");
@@ -92,7 +94,7 @@ export default function Shop() {
         break;
     }
     return sorted;
-  }, [filters, query, sort]);
+  }, [products, filters, query, sort]);
 
   const brandCounts = useMemo(() => {
     const counts = {};
@@ -100,7 +102,7 @@ export default function Shop() {
       counts[p.brand] = (counts[p.brand] ?? 0) + 1;
     });
     return counts;
-  }, [query]);
+  }, [products, query]);
 
   const activeChips = [
     ...filters.brands.map((b) => ({ label: b, clear: () => toggle("brands", b) })),
@@ -322,7 +324,7 @@ export default function Shop() {
       </div>
 
       {/* mobile filter drawer */}
-      <div className={`fixed inset-0 z-[55] lg:hidden ${drawerOpen ? "" : "pointer-events-none"}`}>
+      <div className={`fixed inset-0  lg:hidden ${drawerOpen ? "" : "pointer-events-none"}`}>
         <div
           onClick={() => setDrawerOpen(false)}
           className={`absolute inset-0 bg-ink/50 backdrop-blur-sm transition-opacity ${

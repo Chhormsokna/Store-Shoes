@@ -6,7 +6,7 @@ import {
   useMemo,
   useState,
 } from "react";
-import { products } from "../data/products";
+import { useAdmin } from "./AdminContext";
 
 const STORAGE_KEY = "kickstack.wishlist.v1";
 const WishlistContext = createContext(null);
@@ -22,6 +22,7 @@ const load = () => {
 };
 
 export function WishlistProvider({ children }) {
+  const { products } = useAdmin();
   const [ids, setIds] = useState(load);
 
   useEffect(() => {
@@ -53,7 +54,7 @@ export function WishlistProvider({ children }) {
 
   const items = useMemo(
     () => products.filter((p) => ids.includes(p.id)),
-    [ids]
+    [products, ids]
   );
 
   const count = ids.length;

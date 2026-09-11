@@ -96,10 +96,10 @@ export default function Login() {
 
   return (
     <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 py-10 sm:px-6 lg:px-8">
-      <div className="grid overflow-hidden rounded-[32px] border border-ink/10 bg-white shadow-[0_24px_80px_-40px_rgba(17,17,17,0.25)] lg:grid-cols-[1.1fr_0.9fr]">
+      <div className="grid overflow-hidden  border border-ink/10 bg-white shadow-[0_24px_80px_-40px_rgba(17,17,17,0.25)] lg:grid-cols-[1.1fr_0.9fr]">
         {/* Left Side Banner */}
         <div className="relative hidden min-h-[560px] overflow-hidden bg-ink p-8 text-white lg:block">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(255,219,77,0.28),transparent_38%),radial-gradient(circle_at_bottom_right,_rgba(117,89,255,0.28),transparent_34%)]" />
+          <div className="absolute inset-0]" />
           <div className="relative z-10 flex h-full flex-col justify-between">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.25em] text-volt">Member access</p>

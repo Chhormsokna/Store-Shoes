@@ -16,7 +16,8 @@ import {
 } from "../components/Icons";
 import { useCart } from "../context/CartContext";
 import { useWishlist } from "../context/WishlistContext";
-import { formatPrice, getProduct, getRelated, products } from "../data/products";
+import { useAdmin } from "../context/AdminContext";
+import { formatPrice, getProduct, getRelated } from "../data/products";
 
 const ACCORDIONS = (product) => [
   {
@@ -55,7 +56,8 @@ const ACCORDIONS = (product) => [
 
 export default function ProductDetail() {
   const { slug } = useParams();
-  const product = getProduct(slug);
+  const { products } = useAdmin();
+  const product = products.find((p) => p.slug === slug) || getProduct(slug, products);
   const { addToCart, openCart } = useCart();
   const { isInWishlist, toggleWishlist } = useWishlist();
 
@@ -101,7 +103,7 @@ export default function ProductDetail() {
   const discount = product.compareAt
     ? Math.round(((product.compareAt - product.price) / product.compareAt) * 100)
     : 0;
-  const related = getRelated(product, 4);
+  const related = getRelated(product, 4, products);
   const accordions = ACCORDIONS(product);
 
   const handleAdd = () => {

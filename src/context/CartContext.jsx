@@ -6,7 +6,7 @@ import {
   useMemo,
   useState,
 } from "react";
-import { products } from "../data/products";
+import { useAdmin } from "./AdminContext";
 
 const STORAGE_KEY = "kickstack.cart.v1";
 
@@ -24,6 +24,7 @@ const load = () => {
 };
 
 export function CartProvider({ children }) {
+  const { products } = useAdmin();
   const [items, setItems] = useState(load);
   const [isOpen, setIsOpen] = useState(false);
   const [toast, setToast] = useState(null);
@@ -68,19 +69,18 @@ export function CartProvider({ children }) {
             slug: resolved.slug,
             name: resolved.name,
             brand: resolved.brand,
-            image: resolved.images?.[0],
             price: resolved.price,
-            compareAt: resolved.compareAt ?? null,
-            size: size ?? null,
+            image: resolved.images[0],
+            size: size ?? "OS",
             color: colorName,
-            qty,
-            lineTotal: resolved.price * qty,
+            qty: Math.min(qty, 10),
           },
         ];
       });
-      notify(`${resolved.name} · US ${size ?? "OS"} added to bag`);
+
+      notify(`Added ${resolved.name} to bag`);
     },
-    [notify]
+    [products, notify]
   );
 
   const removeFromCart = useCallback((key) => {

@@ -3,7 +3,8 @@ import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
 import { useWishlist } from "../context/WishlistContext";
-import { products, formatPrice } from "../data/products";
+import { useAdmin } from "../context/AdminContext";
+import { formatPrice } from "../data/products";
 import logo from "../assets/images/logo.svg";
 import { Bag, Chevron, Heart, Menu, Search, Shield, User, X } from "./Icons";
 
@@ -27,6 +28,7 @@ const MARQUEE = [
 export default function Navbar() {
   const { itemCount, openCart, notify } = useCart();
   const { user, isAuthenticated, isAdmin, logout } = useAuth();
+  const { products } = useAdmin();
   const { count: wishCount } = useWishlist();
   const navigate = useNavigate();
   const location = useLocation();

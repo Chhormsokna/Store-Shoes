@@ -18,8 +18,8 @@ import {
   getDeals,
   getNewArrivals,
   getTrending,
-  products,
 } from "../data/products";
+import { useAdmin } from "../context/AdminContext";
 
 const FEATURES = [
   { icon: Truck, title: "48h express", copy: "Free over $150, tracked door-to-door." },
@@ -65,9 +65,10 @@ function useCountdown(hours = 34) {
 }
 
 export default function Home() {
-  const trending = getTrending(8);
-  const newArrivals = getNewArrivals(4);
-  const deals = getDeals(1);
+  const { products } = useAdmin();
+  const trending = useMemo(() => getTrending(8, products), [products]);
+  const newArrivals = useMemo(() => getNewArrivals(4, products), [products]);
+  const deals = useMemo(() => getDeals(1, products), [products]);
   const deal = deals[0];
   const { h, m, s } = useCountdown();
 
@@ -166,7 +167,7 @@ export default function Home() {
                 <img
                   src={deal.images[0]}
                   alt={deal.name}
-                  className="aspect-[4/3] w-full object-cover transition duration-700 hover:scale-105"
+                  className=" w-full object-cover transition duration-700 hover:scale-105"
                 />
               </div>
               <div className="absolute -bottom-5 left-5 flex gap-2">
@@ -238,10 +239,10 @@ export default function Home() {
                   src={list[0].images[0]}
                   alt={c}
                   className={`w-full object-cover transition duration-700 group-hover:scale-105 ${
-                    i === 0 ? "aspect-[16/9] lg:aspect-[4/3]" : "aspect-[16/9]"
+                    i === 0 ? "" : " "
                   }`}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/20 to-transparent" />
+                <div className="absolute inset-0  from-ink/85 via-ink/20 to-transparent" />
                 <div className="absolute inset-x-5 bottom-5 flex items-end justify-between text-white">
                   <div>
                     <p className="display-title text-2xl">{c}</p>
@@ -338,13 +339,13 @@ export default function Home() {
 
       {/* editorial cta */}
       <section className="mx-auto max-w-7xl px-4 pb-20 sm:px-6 lg:px-8">
-        <div className="relative overflow-hidden rounded-[32px]">
+        <div className="relative overflow-hidden ">
           <img
             src={editorialImages.street}
             alt="Street style sneakers"
             className="h-[420px] w-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/70 to-transparent" />
+          <div className="absolute inset-0  from-ink via-ink/70 to-transparent" />
           <div className="absolute inset-0 flex flex-col justify-center px-7 text-white sm:px-12">
             <p className="eyebrow text-volt">The kickstack promise</p>
             <h2 className="display-title mt-3 max-w-lg text-4xl sm:text-5xl">

@@ -821,7 +821,20 @@ const additionalProducts = additionalCatalog.map(
   }
 );
 
-export const products = [...baseProducts, ...additionalProducts];
+const defaultProducts = [...baseProducts, ...additionalProducts];
+
+const loadStoredProducts = () => {
+  try {
+    const raw = typeof window !== "undefined" ? localStorage.getItem("kickstack.admin.products.v1") : null;
+    if (!raw) return defaultProducts;
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) && parsed.length > 0 ? parsed : defaultProducts;
+  } catch {
+    return defaultProducts;
+  }
+};
+
+export const products = loadStoredProducts();
 
 export const brands = [
   {
@@ -886,10 +899,10 @@ export const editorialImages = {
 
 /* ---------- helpers ---------- */
 
-export const getProduct = (slug) => products.find((p) => p.slug === slug);
+export const getProduct = (slug, list = loadStoredProducts()) => list.find((p) => p.slug === slug);
 
-export const getRelated = (product, limit = 4) =>
-  products
+export const getRelated = (product, limit = 4, list = loadStoredProducts()) =>
+  list
     .filter((p) => p.id !== product.id)
     .sort((a, b) => {
       const score = (x) =>
@@ -899,14 +912,14 @@ export const getRelated = (product, limit = 4) =>
     })
     .slice(0, limit);
 
-export const getTrending = (limit = 8) =>
-  products.filter((p) => p.tags?.includes("trending")).slice(0, limit);
+export const getTrending = (limit = 8, list = loadStoredProducts()) =>
+  list.filter((p) => p.tags?.includes("trending")).slice(0, limit);
 
-export const getNewArrivals = (limit = 4) =>
-  products.filter((p) => p.tags?.includes("new")).slice(0, limit);
+export const getNewArrivals = (limit = 4, list = loadStoredProducts()) =>
+  list.filter((p) => p.tags?.includes("new")).slice(0, limit);
 
-export const getDeals = (limit = 4) =>
-  products
+export const getDeals = (limit = 4, list = loadStoredProducts()) =>
+  list
     .filter((p) => p.compareAt && p.compareAt > p.price)
     .sort((a, b) => b.compareAt - b.price - (a.compareAt - a.price))
     .slice(0, limit);

@@ -141,7 +141,7 @@ export default function Checkout() {
   if (order) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:py-24">
-        <div className="rounded-[32px] border border-ink/8 bg-white p-8 text-center card-shadow sm:p-12">
+        <div className="border border-ink/8 bg-white p-8 text-center card-shadow sm:p-12">
           <span className="mx-auto flex h-16 w-16 animate-pop items-center justify-center rounded-full bg-volt text-ink">
             <Check className="h-8 w-8" />
           </span>
