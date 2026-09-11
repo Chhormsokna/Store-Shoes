@@ -36,7 +36,7 @@ export default function ProductCard({ product, className = "" }) {
       className={`group relative flex flex-col overflow-hidden rounded-3xl border border-ink/8 bg-white transition-all duration-300 card-shadow hover:-translate-y-1 hover:border-ink/15 ${className}`}
     >
       <Link to={`/product/${product.slug}`} className="relative block overflow-hidden">
-        <div className="relative aspect-[4/5] w-full overflow-hidden bg-paper-dim">
+        <div className="relative aspect-4/5 w-full overflow-hidden bg-paper-dim">
           <img
             src={product.images[0]}
             alt={product.name}
